@@ -7,7 +7,7 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductsController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ShopController;
-use App\Http\Controllers\StoresController; // Bisa direname jadi SellerController nanti jika mau
+use App\Http\Controllers\StoresController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -57,25 +57,24 @@ Route::middleware('auth')->group(function () {
     // --- ADMIN ROUTES ---
     Route::middleware('admin')->prefix('admin')->name('admin.')->group(function () {
         Route::get('/dashboard', [AdminController::class, 'index'])->name('home');
+        
+        // Manage Users
         Route::get('/users', [AdminController::class, 'users'])->name('users');
         Route::post('/users/{id}/verify', [AdminController::class, 'verifySeller'])->name('users.verify');
+        Route::patch('/users/{id}/role', [AdminController::class, 'updateRole'])->name('users.update-role'); // BARU: Ubah Role
         Route::delete('/users/{id}', [AdminController::class, 'destroyUser'])->name('users.destroy');
+        
+        // Manage Categories
         Route::get('/categories', [AdminController::class, 'categories'])->name('categories');
         Route::post('/categories', [AdminController::class, 'storeCategory'])->name('categories.store');
         Route::delete('/categories/{category}', [AdminController::class, 'destroyCategory'])->name('categories.destroy');
     });
 
-    // --- SELLER ROUTES (DULU MANAGER) ---
-    // Perhatikan middleware 'seller' dan 'seller.approved'
+    // --- SELLER ROUTES ---
     Route::middleware(['seller', 'seller.approved'])->prefix('seller')->name('seller.')->group(function () {
-        
-        // Dashboard
         Route::get('/dashboard', [StoresController::class, 'index'])->name('home');
-        
-        // Orders
         Route::get('/orders', [StoresController::class, 'orders'])->name('orders');
-        
-        // Product CRUD
+        Route::patch('/orders/{id}/status', [StoresController::class, 'updateOrderStatus'])->name('orders.update-status'); // BARU: Ubah Status Order
         Route::resource('products', ProductsController::class);
     });
 });

@@ -63,6 +63,6 @@ class RegisteredUserController extends Controller
         }
 
         // Jika Buyer, arahkan ke Dashboard/Home
-        return redirect(route('dashboard', absolute: false));
+        return redirect(route('shop.index', absolute: false));
     }
 }

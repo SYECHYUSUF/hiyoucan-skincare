@@ -38,6 +38,10 @@
                             <a href="{{ url('/dashboard') }}" class="text-sm font-medium text-hiyoucan-700">Dashboard</a>
                         @else
                             <a href="{{ route('login') }}" class="text-sm font-medium text-gray-500 hover:text-hiyoucan-700">Log in</a>
+                            
+                            @if (Route::has('register'))
+                                <a href="{{ route('register') }}" class="ml-4 text-sm font-medium text-white bg-hiyoucan-700 px-4 py-2 rounded-full hover:bg-hiyoucan-800 transition">Register</a>
+                            @endif
                         @endauth
                     @endif
                 </div>

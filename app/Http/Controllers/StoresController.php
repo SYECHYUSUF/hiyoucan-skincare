@@ -61,8 +61,21 @@ class StoresController extends Controller
     }
 
     // Update Status Pesanan (Opsional)
-    public function updateOrderStatus(Request $request, $id)
+   // --- TAMBAHKAN/UPDATE METHOD INI ---
+    public function updateOrderStatus(Request $request, $orderId)
     {
-        return back()->with('success', 'Status updated (Dummy Feature)');
+        // Validasi status yang diperbolehkan
+        $request->validate([
+            'status' => 'required|in:pending,processing,completed,cancelled'
+        ]);
+
+        // Cari Order berdasarkan ID
+        $order = Order::findOrFail($orderId);
+
+        // Update status
+        $order->status = $request->status;
+        $order->save();
+
+        return back()->with('success', 'Order status updated to ' . ucfirst($request->status));
     }
 }

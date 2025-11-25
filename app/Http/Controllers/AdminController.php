@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
-use App\Models\Product;
 use App\Models\User;
 use App\Models\Order;
 use Illuminate\Http\Request;
@@ -11,52 +10,72 @@ use Illuminate\Support\Str;
 
 class AdminController extends Controller
 {
-    // Halaman Utama Dashboard Admin
     public function index()
     {
-        // Statistik Sederhana
         $stats = [
             'total_sales' => Order::where('status', 'completed')->sum('total_price'),
             'total_orders' => Order::count(),
             'total_users' => User::where('role', 'user')->count(),
-            'pending_sellers' => User::where('role', 'seller')->where('email_verified_at', null)->count(), // Asumsi: Seller pending = email_verified_at null atau kita pakai kolom status nanti
+            'pending_sellers' => User::where('role', 'seller')->whereNull('email_verified_at')->count(),
         ];
 
         return view('dashboard.admin.home', compact('stats'));
     }
 
-    // --- MANAJEMEN USER (Verifikasi Seller) ---
     public function users()
     {
-        // Ambil semua user kecuali admin
+        // Ambil semua user kecuali admin sendiri
         $users = User::where('role', '!=', 'admin')->latest()->get();
         return view('dashboard.admin.users', compact('users'));
     }
 
+    // FITUR 1: Approve/Reject Seller
     public function verifySeller(Request $request, $id)
     {
         $user = User::findOrFail($id);
         
+        // Pastikan dia seller
         if ($user->role !== 'seller') {
-            return back()->with('error', 'User bukan seller.');
+            return back()->with('error', 'User ini bukan seller.');
         }
 
-        // Kita gunakan kolom 'email_verified_at' sebagai penanda APPROVE sementara
-        // Jika null = Pending/Rejected, Jika isi = Approved. 
-        // Atau idealnya buat kolom 'status' di tabel users (tapi kita pakai yang ada dulu).
-        
         if ($request->action === 'approve') {
-            $user->email_verified_at = now(); // Anggap ini sebagai "Approved"
+            $user->email_verified_at = now();
             $user->save();
-            return back()->with('success', 'Seller berhasil disetujui.');
-        } elseif ($request->action === 'reject') {
-            $user->email_verified_at = null; // Anggap ini "Pending/Rejected"
+            return back()->with('success', 'Seller berhasil disetujui (Approved).');
+        } 
+        
+        if ($request->action === 'reject') {
+            $user->email_verified_at = null;
             $user->save();
-            // Opsi: $user->delete(); jika ingin langsung menghapus
-            return back()->with('success', 'Seller ditolak/dinonaktifkan.');
+            return back()->with('success', 'Seller ditolak (Rejected) dan dikembalikan ke status pending.');
         }
 
         return back();
+    }
+
+    // FITUR 2: Ubah Role User (Dropdown)
+    public function updateRole(Request $request, $id)
+    {
+        $request->validate([
+            'role' => 'required|in:user,seller,admin'
+        ]);
+
+        $user = User::findOrFail($id);
+        $user->role = $request->role;
+
+        // Jika diubah jadi seller, otomatis set pending (opsional, atau bisa langsung approve)
+        // Disini kita buat logika: kalau jadi seller, harus diapprove dulu
+        if ($request->role === 'seller' && !$user->email_verified_at) {
+            $user->email_verified_at = null; 
+        } elseif ($request->role === 'user') {
+            // Jika jadi buyer, otomatis verified (agar bisa login)
+            $user->email_verified_at = now();
+        }
+
+        $user->save();
+
+        return back()->with('success', 'Role pengguna berhasil diubah menjadi ' . ucfirst($request->role));
     }
 
     public function destroyUser($id)
@@ -65,7 +84,7 @@ class AdminController extends Controller
         return back()->with('success', 'User berhasil dihapus.');
     }
 
-    // --- MANAJEMEN KATEGORI ---
+    // --- KATEGORI ---
     public function categories()
     {
         $categories = Category::withCount('products')->get();
@@ -74,21 +93,14 @@ class AdminController extends Controller
 
     public function storeCategory(Request $request)
     {
-        $request->validate([
-            'name' => 'required|string|max:255|unique:categories,name',
-        ]);
-
-        Category::create([
-            'name' => $request->name,
-            'slug' => Str::slug($request->name),
-        ]);
-
-        return back()->with('success', 'Kategori berhasil ditambahkan.');
+        $request->validate(['name' => 'required|string|max:255|unique:categories,name']);
+        Category::create(['name' => $request->name, 'slug' => Str::slug($request->name)]);
+        return back()->with('success', 'Kategori ditambahkan.');
     }
 
     public function destroyCategory(Category $category)
     {
         $category->delete();
-        return back()->with('success', 'Kategori berhasil dihapus.');
+        return back()->with('success', 'Kategori dihapus.');
     }
 }
