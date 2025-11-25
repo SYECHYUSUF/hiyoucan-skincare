@@ -24,9 +24,13 @@
                     <a href="#" class="text-gray-500 hover:text-hiyoucan-600 font-medium">About</a>
                 </div>
                 <div class="flex items-center space-x-6">
-                    <a href="#" class="text-gray-500 hover:text-hiyoucan-700 relative">
+                    <a href="{{ route('cart.index') }}" class="text-gray-500 hover:text-hiyoucan-700 relative">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
-                        <span class="absolute -top-1 -right-1 bg-hiyoucan-700 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">0</span>
+                        @auth
+                        <span class="absolute -top-1 -right-1 bg-hiyoucan-700 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">
+                            {{ Auth::user()->carts()->count() }}
+                        </span>
+                        @endauth
                     </a>
                     @if (Route::has('login'))
                         @auth
@@ -113,28 +117,18 @@
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                     @foreach($products as $product)
-                    <div class="bg-white rounded-xl p-4 shadow-sm hover:shadow-md transition group relative">
+                    <a href="{{ route('shop.show', $product->slug) }}" class="block bg-white rounded-xl p-4 shadow-sm hover:shadow-md transition group relative">
                         
                         <div class="absolute top-6 left-6 z-10">
                             <span class="bg-hiyoucan-800 text-white text-[10px] font-bold px-2 py-1 rounded">NEW</span>
                         </div>
-                        <button class="absolute top-6 right-6 z-10 text-gray-400 hover:text-red-500 bg-white rounded-full p-1.5 shadow-sm">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
-                        </button>
-
+                        
                         <div class="relative aspect-[4/5] bg-earth-100 rounded-lg overflow-hidden mb-4">
                             <img src="{{ $product->image }}" alt="{{ $product->name }}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
-                            
-                            <div class="absolute bottom-4 left-0 right-0 px-4 translate-y-full group-hover:translate-y-0 transition duration-300">
-                                <button class="w-full bg-white text-hiyoucan-900 font-bold py-2 rounded shadow hover:bg-hiyoucan-600 hover:text-white transition text-sm flex items-center justify-center gap-2">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
-                                    Add to Cart
-                                </button>
-                            </div>
                         </div>
 
                         <div>
-                            <p class="text-xs text-gray-500 mb-1">{{ $product->category->name }}</p>
+                            <p class="text-xs text-gray-500 mb-1">{{ $product->category ? $product->category->name : 'Uncategorized' }}</p>
                             <h3 class="font-bold text-gray-900 text-lg mb-1 truncate">{{ $product->name }}</h3>
                             <div class="flex justify-between items-center">
                                 <span class="text-hiyoucan-700 font-bold">Rp {{ number_format($product->price, 0, ',', '.') }}</span>
@@ -144,7 +138,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </a>
                     @endforeach
                 </div>
 

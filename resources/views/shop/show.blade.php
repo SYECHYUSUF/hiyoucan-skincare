@@ -80,7 +80,7 @@
                 </form>
 
                 <div class="mt-8 pt-8 border-t border-gray-200 text-sm text-gray-500 space-y-2">
-                    <p><span class="font-bold text-gray-900">Category:</span> {{ $product->category->name }}</p>
+                    <p><span class="font-bold text-gray-900">Category:</span> {{ $product->category ? $product->category->name : 'Uncategorized' }}</p>
                     <p><span class="font-bold text-gray-900">Stock:</span> {{ $product->stock }} items available</p>
                 </div>
             </div>
@@ -105,4 +105,4 @@
     </div>
 
 </body>
-</html>
+</html> 

@@ -68,9 +68,12 @@
                         <span class="text-xl font-bold text-gray-900">Total</span>
                         <span class="text-xl font-bold text-hiyoucan-700">Rp {{ number_format($total, 0, ',', '.') }}</span>
                     </div>
-                    <button class="w-full bg-hiyoucan-800 text-white py-3 rounded-lg font-bold hover:bg-hiyoucan-900 transition">
-                        Checkout Now
-                    </button>
+                    <form action="{{ route('checkout') }}" method="POST">
+                        @csrf
+                        <button type="submit" class="w-full bg-hiyoucan-800 text-white py-3 rounded-lg font-bold hover:bg-hiyoucan-900 transition">
+                            Checkout Now
+                        </button>
+                    </form>
                 </div>
             </div>
         </div>
