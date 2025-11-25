@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<head>
+    <meta charset="utf-8">
+    <title>My Orders - {{ config('app.name') }}</title>
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+</head>
+<body class="bg-earth-100/30 font-sans antialiased text-gray-700">
+
+    <nav class="bg-white border-b border-gray-200 py-4">
+        <div class="max-w-7xl mx-auto px-4 flex justify-between items-center">
+            <div class="flex items-center gap-8">
+                <a href="/" class="text-2xl font-bold text-hiyoucan-900 uppercase tracking-widest">Hiyoucan.</a>
+                <a href="{{ route('shop.index') }}" class="text-gray-500 hover:text-hiyoucan-700 font-medium">Shop</a>
+                <a href="{{ route('dashboard') }}" class="text-gray-500 hover:text-hiyoucan-700 font-medium">Dashboard</a>
+            </div>
+            
+            <div class="flex items-center gap-4">
+                <span class="text-sm text-gray-500">Hi, {{ Auth::user()->name }}</span>
+            </div>
+        </div>
+    </nav>
+
+    <div class="max-w-7xl mx-auto px-4 py-12">
+        <div class="flex justify-between items-end mb-8">
+            <h1 class="text-3xl font-bold text-hiyoucan-900">My Orders</h1>
+            <a href="{{ route('shop.index') }}" class="text-hiyoucan-700 hover:underline text-sm">Continue Shopping</a>
+        </div>
+
+        @if(isset($orders) && $orders->count() > 0)
+            <div class="space-y-6">
+                @foreach($orders as $order)
+                <div class="bg-white rounded-xl shadow-sm overflow-hidden border border-gray-100">
+                    <div class="bg-gray-50 px-6 py-4 border-b border-gray-100 flex flex-wrap gap-4 justify-between items-center">
+                        <div>
+                            <p class="text-xs text-gray-500 uppercase tracking-wide font-bold">Order ID</p>
+                            <p class="text-gray-900 font-medium">#ORD-{{ str_pad($order->id, 5, '0', STR_PAD_LEFT) }}</p>
+                        </div>
+                        <div>
+                            <p class="text-xs text-gray-500 uppercase tracking-wide font-bold">Date</p>
+                            <p class="text-gray-900">{{ $order->created_at->format('d M Y') }}</p>
+                        </div>
+                        <div>
+                            <p class="text-xs text-gray-500 uppercase tracking-wide font-bold">Total Amount</p>
+                            <p class="text-hiyoucan-700 font-bold">Rp {{ number_format($order->total_price, 0, ',', '.') }}</p>
+                        </div>
+                        <div>
+                            <p class="text-xs text-gray-500 uppercase tracking-wide font-bold mb-1">Status</p>
+                            <span class="px-3 py-1 rounded-full text-xs font-bold 
+                                {{ $order->status == 'pending' ? 'bg-yellow-100 text-yellow-700' : '' }}
+                                {{ $order->status == 'processing' ? 'bg-blue-100 text-blue-700' : '' }}
+                                {{ $order->status == 'completed' ? 'bg-green-100 text-green-700' : '' }}
+                                {{ $order->status == 'cancelled' ? 'bg-red-100 text-red-700' : '' }}">
+                                {{ ucfirst($order->status) }}
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="p-6">
+                        <div class="space-y-4">
+                            @foreach($order->items as $item)
+                            <div class="flex items-center">
+                                <div class="h-16 w-16 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
+                                    <img src="{{ $item->product->image }}" alt="{{ $item->product->name }}" class="h-full w-full object-cover object-center">
+                                </div>
+
+                                <div class="ml-4 flex-1 flex flex-col">
+                                    <div>
+                                        <div class="flex justify-between text-base font-medium text-gray-900">
+                                            <h3>
+                                                <a href="{{ route('shop.show', $item->product->slug) }}">{{ $item->product->name }}</a>
+                                            </h3>
+                                            <p class="ml-4">Rp {{ number_format($item->price, 0, ',', '.') }}</p>
+                                        </div>
+                                        <p class="mt-1 text-sm text-gray-500">{{ $item->product->category->name ?? 'General' }}</p>
+                                    </div>
+                                    <div class="flex flex-1 items-end justify-between text-sm">
+                                        <p class="text-gray-500">Qty {{ $item->quantity }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            @if(!$loop->last) <hr class="border-gray-100"> @endif
+                            @endforeach
+                        </div>
+                    </div>
+                </div>
+                @endforeach
+            </div>
+        @else
+            <div class="text-center py-20 bg-white rounded-xl shadow-sm border border-gray-100">
+                <div class="mx-auto h-12 w-12 text-gray-300 mb-4">
+                    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                    </svg>
+                </div>
+                <h3 class="mt-2 text-sm font-medium text-gray-900">No orders</h3>
+                <p class="mt-1 text-sm text-gray-500">You haven't placed any orders yet.</p>
+                <div class="mt-6">
+                    <a href="{{ route('shop.index') }}" class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-hiyoucan-700 hover:bg-hiyoucan-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-hiyoucan-500">
+                        Start Shopping
+                    </a>
+                </div>
+            </div>
+        @endif
+    </div>
+
+    <footer class="bg-white border-t border-gray-200 mt-12 py-8">
+        <div class="max-w-7xl mx-auto px-4 text-center text-sm text-gray-500">
+            <p>&copy; 2024 Hiyoucan Skincare.</p>
+        </div>
+    </footer>
+
+</body>
+</html>

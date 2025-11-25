@@ -17,7 +17,7 @@ class ProductSeeder extends Seeder
             [
                 'name' => 'Official Seller',
                 'password' => bcrypt('password'),
-                'role' => 'manager',
+                'role' => 'seller',
                 'email_verified_at' => now(),
             ]
         );

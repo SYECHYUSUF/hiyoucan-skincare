@@ -7,16 +7,25 @@ use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
-    public function index(){
-        if (Auth::check()){
-            if (Auth::user()->role == 'admin'){
-                return view('dashboard.admin.home');
+    public function index()
+    {
+        if (Auth::check()) {
+            $role = Auth::user()->role;
+
+            // JIKA ADMIN: Redirect ke Admin Dashboard
+            if ($role == 'admin') {
+                return redirect()->route('admin.home');
             }
-            if (Auth::user()->role == 'manager'){
-                return view('dashboard.manager.home');
+
+            // JIKA MANAGER (SELLER): Redirect ke Seller Dashboard
+            // PERBAIKAN: Menggunakan redirect, bukan view()
+            if ($role == 'seller') {
+                return redirect()->route('seller.home'); 
             }
-                return view('dashboard.user.home');
-        }else{
+
+            // JIKA USER BIASA: Tampilkan dashboard user
+            return view('dashboard.user.home');
+        } else {
             return redirect('login');
         }
     }
