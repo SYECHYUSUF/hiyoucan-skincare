@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Shop - {{ config('app.name', 'Hiyoucan') }}</title>
+    <link rel="preconnect" href="https://fonts.bunny.net">
+    <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+</head>
+<body class="antialiased font-sans text-gray-700 bg-earth-100/30">
+
+    <nav x-data="{ open: false }" class="bg-white fixed w-full z-50 top-0 border-b border-gray-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-20">
+                <div class="flex items-center">
+                    <a href="/" class="text-2xl font-bold text-hiyoucan-900 tracking-widest uppercase">
+                        Hiyoucan.
+                    </a>
+                </div>
+                <div class="hidden sm:flex sm:items-center sm:space-x-8">
+                    <a href="/" class="text-gray-500 hover:text-hiyoucan-600 font-medium">Home</a>
+                    <a href="{{ route('shop.index') }}" class="text-hiyoucan-700 font-bold font-medium border-b-2 border-hiyoucan-600">Shop</a>
+                    <a href="#" class="text-gray-500 hover:text-hiyoucan-600 font-medium">About</a>
+                </div>
+                <div class="flex items-center space-x-6">
+                    <a href="#" class="text-gray-500 hover:text-hiyoucan-700 relative">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
+                        <span class="absolute -top-1 -right-1 bg-hiyoucan-700 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">0</span>
+                    </a>
+                    @if (Route::has('login'))
+                        @auth
+                            <a href="{{ url('/dashboard') }}" class="text-sm font-medium text-hiyoucan-700">Dashboard</a>
+                        @else
+                            <a href="{{ route('login') }}" class="text-sm font-medium text-gray-500 hover:text-hiyoucan-700">Log in</a>
+                        @endauth
+                    @endif
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="pt-28 pb-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex flex-col lg:flex-row gap-8">
+            
+            <aside class="w-full lg:w-1/4 flex-shrink-0">
+                <div class="sticky top-28 space-y-8">
+                    <div class="flex items-center justify-between pb-4 border-b border-gray-200">
+                        <h3 class="text-xl font-bold text-hiyoucan-900">Filter Options</h3>
+                        <button class="text-xs text-gray-400 hover:text-hiyoucan-600">Clear All</button>
+                    </div>
+
+                    <div>
+                        <h4 class="font-semibold text-gray-900 mb-3">By Categories</h4>
+                        <div class="space-y-2">
+                            @foreach($categories as $category)
+                            <label class="flex items-center space-x-3 cursor-pointer group">
+                                <input type="checkbox" class="form-checkbox h-4 w-4 text-hiyoucan-600 rounded border-gray-300 focus:ring-hiyoucan-500">
+                                <span class="text-gray-600 group-hover:text-hiyoucan-700 transition">{{ $category->name }}</span>
+                            </label>
+                            @endforeach
+                        </div>
+                    </div>
+
+                    <div>
+                        <h4 class="font-semibold text-gray-900 mb-3">Price</h4>
+                        <div class="px-1">
+                            <input type="range" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-hiyoucan-600">
+                            <div class="flex justify-between text-xs text-gray-500 mt-2">
+                                <span>Rp 50k</span>
+                                <span>Rp 1.000k</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h4 class="font-semibold text-gray-900 mb-3">Review</h4>
+                        <div class="space-y-2">
+                            <label class="flex items-center space-x-3 cursor-pointer">
+                                <input type="checkbox" class="form-checkbox h-4 w-4 text-hiyoucan-600 rounded border-gray-300">
+                                <div class="flex text-yellow-400">
+                                    @for($i=0; $i<5; $i++) <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg> @endfor
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+
+            <main class="w-full lg:w-3/4">
+                <div class="flex flex-col sm:flex-row justify-between items-center mb-6 bg-white p-4 rounded-lg shadow-sm">
+                    <p class="text-sm text-gray-500 mb-2 sm:mb-0">Showing <span class="font-bold text-gray-900">{{ $products->firstItem() }}-{{ $products->lastItem() }}</span> of {{ $products->total() }} results</p>
+                    <div class="flex items-center space-x-3">
+                        <label class="text-sm text-gray-500">Sort by:</label>
+                        <select class="border-none bg-gray-50 text-sm rounded-md focus:ring-0 cursor-pointer hover:bg-gray-100">
+                            <option>Default Sorting</option>
+                            <option>Price: Low to High</option>
+                            <option>Price: High to Low</option>
+                            <option>Newest</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="flex flex-wrap gap-2 mb-6">
+                    <span class="px-3 py-1 bg-hiyoucan-800 text-white text-xs rounded-full flex items-center">
+                        Skin Care <button class="ml-2 hover:text-red-200">×</button>
+                    </span>
+                    <span class="px-3 py-1 bg-white border border-gray-200 text-gray-600 text-xs rounded-full flex items-center">
+                        In Stock <button class="ml-2 hover:text-red-500">×</button>
+                    </span>
+                    <button class="text-xs text-hiyoucan-600 underline ml-2">Clear All</button>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    @foreach($products as $product)
+                    <div class="bg-white rounded-xl p-4 shadow-sm hover:shadow-md transition group relative">
+                        
+                        <div class="absolute top-6 left-6 z-10">
+                            <span class="bg-hiyoucan-800 text-white text-[10px] font-bold px-2 py-1 rounded">NEW</span>
+                        </div>
+                        <button class="absolute top-6 right-6 z-10 text-gray-400 hover:text-red-500 bg-white rounded-full p-1.5 shadow-sm">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
+                        </button>
+
+                        <div class="relative aspect-[4/5] bg-earth-100 rounded-lg overflow-hidden mb-4">
+                            <img src="{{ $product->image }}" alt="{{ $product->name }}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                            
+                            <div class="absolute bottom-4 left-0 right-0 px-4 translate-y-full group-hover:translate-y-0 transition duration-300">
+                                <button class="w-full bg-white text-hiyoucan-900 font-bold py-2 rounded shadow hover:bg-hiyoucan-600 hover:text-white transition text-sm flex items-center justify-center gap-2">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
+                                    Add to Cart
+                                </button>
+                            </div>
+                        </div>
+
+                        <div>
+                            <p class="text-xs text-gray-500 mb-1">{{ $product->category->name }}</p>
+                            <h3 class="font-bold text-gray-900 text-lg mb-1 truncate">{{ $product->name }}</h3>
+                            <div class="flex justify-between items-center">
+                                <span class="text-hiyoucan-700 font-bold">Rp {{ number_format($product->price, 0, ',', '.') }}</span>
+                                <div class="flex items-center text-yellow-400 text-xs">
+                                    <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                                    <span class="text-gray-400 ml-1">4.8</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    @endforeach
+                </div>
+
+                <div class="mt-12">
+                    {{ $products->links() }}
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <footer class="bg-white border-t border-gray-200 mt-12 py-8">
+        <div class="max-w-7xl mx-auto px-4 text-center text-sm text-gray-500">
+            <p>&copy; 2024 Hiyoucan Skincare.</p>
+        </div>
+    </footer>
+
+</body>
+</html>
