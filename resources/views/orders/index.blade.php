@@ -30,60 +30,35 @@
         @if(isset($orders) && $orders->count() > 0)
             <div class="space-y-6">
                 @foreach($orders as $order)
-                <div class="bg-white rounded-xl shadow-sm overflow-hidden border border-gray-100">
-                    <div class="bg-gray-50 px-6 py-4 border-b border-gray-100 flex flex-wrap gap-4 justify-between items-center">
-                        <div>
-                            <p class="text-xs text-gray-500 uppercase tracking-wide font-bold">Order ID</p>
-                            <p class="text-gray-900 font-medium">#ORD-{{ str_pad($order->id, 5, '0', STR_PAD_LEFT) }}</p>
-                        </div>
-                        <div>
-                            <p class="text-xs text-gray-500 uppercase tracking-wide font-bold">Date</p>
-                            <p class="text-gray-900">{{ $order->created_at->format('d M Y') }}</p>
-                        </div>
-                        <div>
-                            <p class="text-xs text-gray-500 uppercase tracking-wide font-bold">Total Amount</p>
-                            <p class="text-hiyoucan-700 font-bold">Rp {{ number_format($order->total_price, 0, ',', '.') }}</p>
-                        </div>
-                        <div>
-                            <p class="text-xs text-gray-500 uppercase tracking-wide font-bold mb-1">Status</p>
-                            <span class="px-3 py-1 rounded-full text-xs font-bold 
-                                {{ $order->status == 'pending' ? 'bg-yellow-100 text-yellow-700' : '' }}
-                                {{ $order->status == 'processing' ? 'bg-blue-100 text-blue-700' : '' }}
-                                {{ $order->status == 'completed' ? 'bg-green-100 text-green-700' : '' }}
-                                {{ $order->status == 'cancelled' ? 'bg-red-100 text-red-700' : '' }}">
-                                {{ ucfirst($order->status) }}
-                            </span>
-                        </div>
-                    </div>
-
-                    <div class="p-6">
-                        <div class="space-y-4">
-                            @foreach($order->items as $item)
-                            <div class="flex items-center">
-                                <div class="h-16 w-16 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
-                                    <img src="{{ $item->product->image }}" alt="{{ $item->product->name }}" class="h-full w-full object-cover object-center">
-                                </div>
-
-                                <div class="ml-4 flex-1 flex flex-col">
-                                    <div>
-                                        <div class="flex justify-between text-base font-medium text-gray-900">
-                                            <h3>
-                                                <a href="{{ route('shop.show', $item->product->slug) }}">{{ $item->product->name }}</a>
-                                            </h3>
-                                            <p class="ml-4">Rp {{ number_format($item->price, 0, ',', '.') }}</p>
-                                        </div>
-                                        <p class="mt-1 text-sm text-gray-500">{{ $item->product->category->name ?? 'General' }}</p>
-                                    </div>
-                                    <div class="flex flex-1 items-end justify-between text-sm">
-                                        <p class="text-gray-500">Qty {{ $item->quantity }}</p>
-                                    </div>
-                                </div>
+               <div class="bg-gray-50 px-6 py-4 border-b border-gray-100">
+                        <div class="flex flex-wrap gap-6 justify-between items-start">
+                            <div>
+                                <p class="text-xs text-gray-500 uppercase tracking-wide font-bold">Order ID</p>
+                                <p class="text-gray-900 font-medium">#ORD-{{ str_pad($order->id, 5, '0', STR_PAD_LEFT) }}</p>
                             </div>
-                            @if(!$loop->last) <hr class="border-gray-100"> @endif
-                            @endforeach
+                            <div>
+                                <p class="text-xs text-gray-500 uppercase tracking-wide font-bold">Date</p>
+                                <p class="text-gray-900">{{ $order->created_at->format('d M Y') }}</p>
+                            </div>
+                            <div class="flex-1 min-w-[200px]">
+                                <p class="text-xs text-gray-500 uppercase tracking-wide font-bold">Shipping To</p>
+                                <p class="text-gray-900 text-sm truncate">{{ $order->address }}</p>
+                            </div>
+                            <div>
+                                <p class="text-xs text-gray-500 uppercase tracking-wide font-bold">Total Amount</p>
+                                <p class="text-hiyoucan-700 font-bold">Rp {{ number_format($order->total_price, 0, ',', '.') }}</p>
+                            </div>
+                            <div>
+                                <span class="px-3 py-1 rounded-full text-xs font-bold 
+                                    {{ $order->status == 'pending' ? 'bg-yellow-100 text-yellow-700' : '' }}
+                                    {{ $order->status == 'processing' ? 'bg-blue-100 text-blue-700' : '' }}
+                                    {{ $order->status == 'completed' ? 'bg-green-100 text-green-700' : '' }}
+                                    {{ $order->status == 'cancelled' ? 'bg-red-100 text-red-700' : '' }}">
+                                    {{ ucfirst($order->status) }}
+                                </span>
+                            </div>
                         </div>
                     </div>
-                </div>
                 @endforeach
             </div>
         @else

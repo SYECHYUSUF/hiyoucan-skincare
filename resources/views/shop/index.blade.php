@@ -10,44 +10,7 @@
 </head>
 <body class="antialiased font-sans text-gray-700 bg-earth-100/30">
 
-    <nav x-data="{ open: false }" class="bg-white fixed w-full z-50 top-0 border-b border-gray-100">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-20">
-                <div class="flex items-center">
-                    <a href="/" class="text-2xl font-bold text-hiyoucan-900 tracking-widest uppercase">
-                        Hiyoucan.
-                    </a>
-                </div>
-                <div class="hidden sm:flex sm:items-center sm:space-x-8">
-                    <a href="/" class="text-gray-500 hover:text-hiyoucan-600 font-medium">Home</a>
-                    <a href="{{ route('shop.index') }}" class="text-hiyoucan-700 font-bold font-medium border-b-2 border-hiyoucan-600">Shop</a>
-                    <a href="#" class="text-gray-500 hover:text-hiyoucan-600 font-medium">About</a>
-                </div>
-                <div class="flex items-center space-x-6">
-                    <a href="{{ route('cart.index') }}" class="text-gray-500 hover:text-hiyoucan-700 relative">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
-                        @auth
-                        <span class="absolute -top-1 -right-1 bg-hiyoucan-700 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">
-                            {{ Auth::user()->carts()->count() }}
-                        </span>
-                        @endauth
-                    </a>
-                    
-                    @if (Route::has('login'))
-                        @auth
-                            <a href="{{ url('/dashboard') }}" class="text-sm font-medium text-hiyoucan-700">Dashboard</a>
-                        @else
-                            <a href="{{ route('login') }}" class="text-sm font-medium text-gray-500 hover:text-hiyoucan-700">Log in</a>
-                            
-                            @if (Route::has('register'))
-                                <a href="{{ route('register') }}" class="ml-4 text-sm font-medium text-white bg-hiyoucan-700 px-4 py-2 rounded-full hover:bg-hiyoucan-800 transition">Register</a>
-                            @endif
-                        @endauth
-                    @endif
-                </div>
-            </div>
-        </div>
-    </nav>
+    @include('layouts.public-nav')
 
     <div class="pt-28 pb-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex flex-col lg:flex-row gap-8">
@@ -141,36 +104,46 @@
                 @endif
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                    @forelse($products as $product)
-                    <a href="{{ route('shop.show', $product->slug) }}" class="block bg-white rounded-xl p-4 shadow-sm hover:shadow-md transition group relative border border-gray-100">
+                   @forelse($products as $product)
+                    <div class="bg-white rounded-xl p-4 shadow-sm hover:shadow-md transition group relative border border-gray-100">
                         
                         @if($product->created_at->diffInDays() < 7)
-                        <div class="absolute top-6 left-6 z-10">
+                        <div class="absolute top-6 left-6 z-10 pointer-events-none">
                             <span class="bg-hiyoucan-800 text-white text-[10px] font-bold px-2 py-1 rounded">NEW</span>
                         </div>
                         @endif
-                        
-                        <div class="relative aspect-[4/5] bg-earth-100 rounded-lg overflow-hidden mb-4">
-                            <img src="{{ $product->image }}" alt="{{ $product->name }}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
-                        </div>
 
-                        <div>
-                            <p class="text-xs text-gray-500 mb-1">{{ $product->category->name ?? 'General' }}</p>
-                            <h3 class="font-bold text-gray-900 text-lg mb-1 truncate">{{ $product->name }}</h3>
-                            <div class="flex justify-between items-center">
-                                <span class="text-hiyoucan-700 font-bold">Rp {{ number_format($product->price, 0, ',', '.') }}</span>
-                                <div class="flex items-center text-yellow-400 text-xs">
-                                    <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-                                    <span class="text-gray-400 ml-1">4.8</span>
+                        @auth
+                        <form action="{{ route('wishlist.toggle', $product->id) }}" method="POST" class="absolute top-6 right-6 z-20">
+                            @csrf
+                            <button type="submit" class="bg-white rounded-full p-1.5 shadow-sm hover:scale-110 transition duration-200 group/btn">
+                                @php $isWishlisted = Auth::user()->wishlists->contains('product_id', $product->id); @endphp
+                                <svg class="w-5 h-5 {{ $isWishlisted ? 'fill-red-500 text-red-500' : 'fill-none text-gray-400 group-hover/btn:text-red-500' }}" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                                </svg>
+                            </button>
+                        </form>
+                        @endauth
+                        
+                        <a href="{{ route('shop.show', $product->slug) }}" class="block">
+                            <div class="relative aspect-[4/5] bg-earth-100 rounded-lg overflow-hidden mb-4">
+                                <img src="{{ $product->image }}" alt="{{ $product->name }}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                            </div>
+
+                            <div>
+                                <p class="text-xs text-gray-500 mb-1">{{ $product->category->name ?? 'General' }}</p>
+                                <h3 class="font-bold text-gray-900 text-lg mb-1 truncate">{{ $product->name }}</h3>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-hiyoucan-700 font-bold">Rp {{ number_format($product->price, 0, ',', '.') }}</span>
+                                    <div class="flex items-center text-yellow-400 text-xs">
+                                        <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                                        <span class="text-gray-400 ml-1">{{ $product->average_rating }}</span>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </a>
-                    @empty
-                    <div class="col-span-3 text-center py-20 bg-white rounded-xl">
-                        <p class="text-gray-500">No products found matching your criteria.</p>
-                        <a href="{{ route('shop.index') }}" class="text-hiyoucan-700 font-bold hover:underline mt-2 block">Clear Filters</a>
+                        </a>
                     </div>
+                    @empty
                     @endforelse
                 </div>
 
@@ -181,9 +154,46 @@
         </div>
     </div>
 
-    <footer class="bg-white border-t border-gray-200 mt-12 py-8">
-        <div class="max-w-7xl mx-auto px-4 text-center text-sm text-gray-500">
-            <p>&copy; 2024 Hiyoucan Skincare.</p>
+    <footer class="bg-hiyoucan-900 text-white pt-16 pb-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
+                <div>
+                    <h2 class="text-2xl font-bold tracking-widest uppercase mb-4">Hiyoucan.</h2>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        Kami berdedikasi untuk menyediakan produk perawatan kulit organik terbaik untuk kecantikan alami
+                        Anda.
+                    </p>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-4">Shop</h4>
+                    <ul class="space-y-2 text-gray-400 text-sm">
+                        <li><a href="#" class="hover:text-white">All Products</a></li>
+                        <li><a href="#" class="hover:text-white">Skin Care</a></li>
+                        <li><a href="#" class="hover:text-white">Body Care</a></li>
+                        <li><a href="#" class="hover:text-white">New Arrivals</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-4">Support</h4>
+                    <ul class="space-y-2 text-gray-400 text-sm">
+                        <li><a href="#" class="hover:text-white">FAQ</a></li>
+                        <li><a href="#" class="hover:text-white">Shipping & Returns</a></li>
+                        <li><a href="#" class="hover:text-white">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-4">Newsletter</h4>
+                    <p class="text-gray-400 text-sm mb-4">Subscribe untuk mendapatkan update terbaru.</p>
+                    <div class="flex">
+                        <input type="email" placeholder="Your email"
+                            class="px-4 py-2 bg-hiyoucan-800 border-none text-white rounded-l focus:ring-1 focus:ring-hiyoucan-500 w-full">
+                        <button class="bg-hiyoucan-500 px-4 py-2 rounded-r hover:bg-hiyoucan-600">GO</button>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-hiyoucan-800 pt-8 text-center text-gray-500 text-sm">
+                &copy; 2024 Hiyoucan Skincare. All rights reserved.
+            </div>
         </div>
     </footer>
 

@@ -23,8 +23,14 @@ class OrderController extends Controller
     }
 
     // Proses Checkout
+    // Proses Checkout
     public function checkout(Request $request)
     {
+        // 1. Validasi Alamat Wajib Diisi
+        $request->validate([
+            'address' => 'required|string|max:500',
+        ]);
+
         /** @var \App\Models\User $user */
         $user = Auth::user();
         $cartItems = $user->carts()->with('product')->get();
@@ -33,22 +39,19 @@ class OrderController extends Controller
             return redirect()->route('cart.index')->with('error', 'Cart is empty');
         }
 
-        // Hitung Total Harga
         $total = $cartItems->sum(function ($item) {
             return $item->product->price * $item->quantity;
         });
 
-        // Gunakan Database Transaction agar data aman (Atomicity)
-        DB::transaction(function () use ($user, $cartItems, $total) {
-            // 1. Buat Order Baru
+        DB::transaction(function () use ($user, $cartItems, $total, $request) {
+            // 2. Simpan Order dengan Alamat dari Request
             $order = Order::create([
                 'user_id' => $user->id,
                 'total_price' => $total,
                 'status' => 'pending',
-                'address' => 'Default Address (Advanced Feature Later)',
+                'address' => $request->address, // <--- INI PERUBAHANNYA (Bukan hardcode lagi)
             ]);
 
-            // 2. Pindahkan item dari Cart ke OrderItem
             foreach ($cartItems as $item) {
                 OrderItem::create([
                     'order_id' => $order->id,
@@ -56,12 +59,9 @@ class OrderController extends Controller
                     'quantity' => $item->quantity,
                     'price' => $item->product->price,
                 ]);
-
-                // Opsional: Kurangi stok produk
                 $item->product->decrement('stock', $item->quantity);
             }
 
-            // 3. Kosongkan Keranjang
             $user->carts()->delete();
         });
 

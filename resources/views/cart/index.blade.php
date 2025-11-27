@@ -7,12 +7,7 @@
 </head>
 <body class="bg-earth-100/30 font-sans antialiased text-gray-700">
 
-    <nav class="bg-white border-b border-gray-200 py-4">
-        <div class="max-w-7xl mx-auto px-4 flex justify-between items-center">
-            <a href="/" class="text-2xl font-bold text-hiyoucan-900 uppercase tracking-widest">Hiyoucan.</a>
-            <a href="{{ route('shop.index') }}" class="text-gray-500 hover:text-hiyoucan-700">Continue Shopping</a>
-        </div>
-    </nav>
+    @include('layouts.public-nav')
 
     <div class="max-w-7xl mx-auto px-4 py-12">
         <h1 class="text-3xl font-bold text-hiyoucan-900 mb-8">Shopping Cart</h1>
@@ -68,15 +63,29 @@
                         <span class="text-xl font-bold text-gray-900">Total</span>
                         <span class="text-xl font-bold text-hiyoucan-700">Rp {{ number_format($total, 0, ',', '.') }}</span>
                     </div>
+
                     <form action="{{ route('checkout') }}" method="POST">
                         @csrf
-                        <button type="submit" class="w-full bg-hiyoucan-800 text-white py-3 rounded-lg font-bold hover:bg-hiyoucan-900 transition">
-                            Checkout Now
+                        
+                        <div class="mb-6">
+                            <label for="address" class="block text-sm font-medium text-gray-700 mb-2">Shipping Address</label>
+                            <textarea 
+                                name="address" 
+                                id="address" 
+                                rows="3" 
+                                class="w-full border-gray-300 rounded-lg shadow-sm focus:border-hiyoucan-500 focus:ring-hiyoucan-500 text-sm" 
+                                placeholder="Enter your full delivery address..."
+                                required></textarea>
+                        </div>
+
+                        <button type="submit" class="w-full bg-hiyoucan-800 text-white py-3 rounded-lg font-bold hover:bg-hiyoucan-900 transition shadow-lg flex justify-center items-center gap-2">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                            Confirm & Checkout
                         </button>
                     </form>
+
                 </div>
             </div>
-        </div>
         @else
             <div class="text-center py-20 bg-white rounded-xl shadow-sm">
                 <p class="text-gray-500 mb-4">Your cart is currently empty.</p>

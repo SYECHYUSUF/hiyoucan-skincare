@@ -1,10 +1,12 @@
-<x-app-layout>
+<x-dashboard-layout>
     <x-slot name="header">
-        <div class="flex justify-between items-center">
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+        <div class="flex justify-between items-center gap-2">
+            <h2 class="font-semibold text-xl text-gray-800 leading-tight ">
                 {{ __('Seller Dashboard') }}
             </h2>
             <div class="space-x-2">
+                <a href="{{ route('seller.store.edit') }}" class="bg-purple-600 text-white px-4 py-2 rounded text-sm hover:bg-purple-700">Store Profile</a>
+                
                 <a href="{{ route('seller.products.index') }}" class="bg-hiyoucan-700 text-white px-4 py-2 rounded text-sm hover:bg-hiyoucan-800">My Products</a>
                 <a href="{{ route('seller.orders') }}" class="bg-gray-700 text-white px-4 py-2 rounded text-sm hover:bg-gray-800">Incoming Orders</a>
             </div>
@@ -67,4 +69,4 @@
             </div>
         </div>
     </div>
-</x-app-layout>
+</x-dashboard-layout>

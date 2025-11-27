@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Models\User;
 use App\Models\Order;
+use App\Models\Product; // Tambahkan ini
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage; // Tambahkan ini untuk hapus gambar
 
 class AdminController extends Controller
 {
@@ -22,19 +24,46 @@ class AdminController extends Controller
         return view('dashboard.admin.home', compact('stats'));
     }
 
-    public function users()
+    // Update method users
+    public function users(Request $request)
     {
-        // Ambil semua user kecuali admin sendiri
-        $users = User::where('role', '!=', 'admin')->latest()->get();
+        $query = User::where('role', '!=', 'admin');
+
+        // Logic Search
+        if ($request->search) {
+            $query->where(function($q) use ($request) {
+                $q->where('name', 'like', '%'.$request->search.'%')
+                  ->orWhere('email', 'like', '%'.$request->search.'%');
+            });
+        }
+
+        // Logic Filter Role
+        if ($request->role && $request->role != 'all') {
+            $query->where('role', $request->role);
+        }
+
+        $users = $query->latest()->paginate(10)->withQueryString();
         return view('dashboard.admin.users', compact('users'));
     }
 
-    // FITUR 1: Approve/Reject Seller
+    // Update method products
+    public function products(Request $request)
+    {
+        $query = Product::with(['seller', 'category']);
+
+        // Logic Search Produk
+        if ($request->search) {
+            $query->where('name', 'like', '%'.$request->search.'%');
+        }
+
+        $products = $query->latest()->paginate(10)->withQueryString();
+        return view('dashboard.admin.products', compact('products'));
+    }
+
     public function verifySeller(Request $request, $id)
     {
         $user = User::findOrFail($id);
         
-        // Pastikan dia seller
         if ($user->role !== 'seller') {
             return back()->with('error', 'User ini bukan seller.');
         }
@@ -48,28 +77,32 @@ class AdminController extends Controller
         if ($request->action === 'reject') {
             $user->email_verified_at = null;
             $user->save();
-            return back()->with('success', 'Seller ditolak (Rejected) dan dikembalikan ke status pending.');
+            return back()->with('success', 'Seller ditolak (Rejected).');
         }
 
         return back();
     }
 
-    // FITUR 2: Ubah Role User (Dropdown)
+    // PERBAIKAN: Hapus opsi 'admin' dari validasi
     public function updateRole(Request $request, $id)
     {
         $request->validate([
-            'role' => 'required|in:user,seller,admin'
+            'role' => 'required|in:user,seller' // Admin dihapus dari sini
         ]);
 
         $user = User::findOrFail($id);
+        
+        // Cegah jika mencoba mengubah akun admin utama
+        if ($user->role === 'admin') {
+            return back()->with('error', 'Tidak dapat mengubah role sesama Admin.');
+        }
+
         $user->role = $request->role;
 
-        // Jika diubah jadi seller, otomatis set pending (opsional, atau bisa langsung approve)
-        // Disini kita buat logika: kalau jadi seller, harus diapprove dulu
+        // Logika verifikasi ulang jika jadi seller
         if ($request->role === 'seller' && !$user->email_verified_at) {
             $user->email_verified_at = null; 
         } elseif ($request->role === 'user') {
-            // Jika jadi buyer, otomatis verified (agar bisa login)
             $user->email_verified_at = now();
         }
 
@@ -80,8 +113,28 @@ class AdminController extends Controller
 
     public function destroyUser($id)
     {
-        User::findOrFail($id)->delete();
+        $user = User::findOrFail($id);
+        if ($user->role === 'admin') {
+            return back()->with('error', 'Tidak bisa menghapus Admin.');
+        }
+        $user->delete();
         return back()->with('success', 'User berhasil dihapus.');
+    }
+
+    // --- BARU: ADMIN PRODUCT MANAGEMENT ---
+
+    public function destroyProduct($id)
+    {
+        $product = Product::findOrFail($id);
+
+        // Hapus gambar dari storage jika ada
+        if ($product->image && !Str::startsWith($product->getRawOriginal('image'), 'http')) {
+            Storage::disk('public')->delete($product->getRawOriginal('image'));
+        }
+
+        $product->delete();
+
+        return back()->with('success', 'Produk berhasil dihapus karena melanggar ketentuan.');
     }
 
     // --- KATEGORI ---

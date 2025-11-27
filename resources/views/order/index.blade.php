@@ -7,15 +7,7 @@
 </head>
 <body class="bg-earth-100/30 font-sans antialiased text-gray-700">
 
-    <nav class="bg-white border-b border-gray-200 py-4">
-        <div class="max-w-7xl mx-auto px-4 flex justify-between items-center">
-            <a href="/" class="text-2xl font-bold text-hiyoucan-900 uppercase tracking-widest">Hiyoucan.</a>
-            <div class="flex space-x-4">
-                <a href="{{ route('shop.index') }}" class="text-gray-500 hover:text-hiyoucan-700">Shop</a>
-                <a href="{{ route('dashboard') }}" class="text-gray-500 hover:text-hiyoucan-700">Dashboard</a>
-            </div>
-        </div>
-    </nav>
+    @include('layouts.public-nav')
 
     <div class="max-w-7xl mx-auto px-4 py-12">
         <h1 class="text-3xl font-bold text-hiyoucan-900 mb-8">My Orders</h1>

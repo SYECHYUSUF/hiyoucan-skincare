@@ -1,6 +1,6 @@
-<x-app-layout>
+<x-dashboard-layout>
     <x-slot name="header">
-        <div class="flex justify-between items-center">
+        <div class="flex justify-between items-center gap-2">
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">{{ __('My Products') }}</h2>
             <a href="{{ route('seller.products.create') }}" class="bg-hiyoucan-700 text-white px-4 py-2 rounded text-sm hover:bg-hiyoucan-800">+ Add Product</a>
         </div>
@@ -47,4 +47,4 @@
             </div>
         </div>
     </div>
-</x-app-layout>
+</x-dashboard-layout>

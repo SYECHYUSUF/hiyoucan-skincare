@@ -55,8 +55,11 @@ class ShopController extends Controller
         return view('shop.index', compact('categories', 'products'));
     }
 
-    public function show(Product $product)
+   public function show(Product $product)
     {
+        // Load relasi reviews dan user-nya agar bisa ditampilkan
+        $product->load(['reviews.user', 'category']);
+
         $relatedProducts = Product::where('category_id', $product->category_id)
             ->where('id', '!=', $product->id)
             ->where('is_active', true)
