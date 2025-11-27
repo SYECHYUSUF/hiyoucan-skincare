@@ -51,7 +51,7 @@
         </div>
     </header>
 
-    <div class="mb-[1280px]">
+    <div class="">
 
         <section class="py-12 bg-white border-b border-earth-200">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -112,7 +112,79 @@
                     <p class="text-gray-500 mt-2">Temukan perawatan terbaik untuk jenis kulitmu</p>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 h-auto md:h-[500px]">
+                {{-- bagian best --}}
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 mb-12">
+            <div class="group">
+                <div class="relative aspect-square overflow-hidden rounded-xl bg-earth-100 mb-4">
+                    <img src="https://images.unsplash.com/photo-1611930022073-b7a4ba5fcccd?q=80&w=1000&auto=format&fit=crop"
+                        class="object-cover w-full h-full group-hover:scale-110 transition duration-500">
+                    <button
+                        class="absolute bottom-4 right-4 bg-white p-2 rounded-full shadow-md hover:bg-hiyoucan-600 hover:text-white transition">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                        </svg>
+                    </button>
+                </div>
+                <h3 class="font-medium text-gray-900">Apricot Melon</h3>
+                <p class="text-sm text-gray-500">Softening Cream</p>
+                <p class="text-hiyoucan-700 font-bold mt-1">Rp 145.000</p>
+            </div>
+
+
+            <div class="group">
+                <div class="relative aspect-square overflow-hidden rounded-xl bg-earth-100 mb-4">
+                    <img src="https://images.unsplash.com/photo-1601049541289-9b1b7bbbfe19?q=80&w=1000&auto=format&fit=crop"
+                        class="object-cover w-full h-full group-hover:scale-110 transition duration-500">
+                    <button
+                        class="absolute bottom-4 right-4 bg-white p-2 rounded-full shadow-md hover:bg-hiyoucan-600 hover:text-white transition">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                        </svg>
+                    </button>
+                </div>
+                    <h3 class="font-medium text-gray-900">Birch Butter</h3>
+                    <p class="text-sm text-gray-500">Silkiness Cream</p>
+                    <p class="text-hiyoucan-700 font-bold mt-1">Rp 180.000</p>
+            </div>
+
+            <div class="group">
+                <div class="relative aspect-square overflow-hidden rounded-xl bg-earth-100 mb-4">
+                    <img src="https://images.unsplash.com/photo-1620916297397-a4a5402a3c6c?q=80&w=1000&auto=format&fit=crop"
+                        class="object-cover w-full h-full group-hover:scale-110 transition duration-500">
+                    <button
+                        class="absolute bottom-4 right-4 bg-white p-2 rounded-full shadow-md hover:bg-hiyoucan-600 hover:text-white transition">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                        </svg>
+                    </button>
+                </div>
+                    <h3 class="font-medium text-gray-900">Azalea Fields</h3>
+                    <p class="text-sm text-gray-500">Soothing Cream</p>
+                    <p class="text-hiyoucan-700 font-bold mt-1">Rp 210.000</p>
+            </div>
+
+            <div class="group">
+                <div class="relative aspect-square overflow-hidden rounded-xl bg-earth-100 mb-4">
+                    <img src="https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?q=80&w=1000&auto=format&fit=crop"
+                        class="object-cover w-full h-full group-hover:scale-110 transition duration-500">
+                    <button
+                        class="absolute bottom-4 right-4 bg-white p-2 rounded-full shadow-md hover:bg-hiyoucan-600 hover:text-white transition">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                        </svg>
+                    </button>
+                </div>
+                <h3 class="font-medium text-gray-900">Aura Natural</h3>
+                <p class="text-sm text-gray-500">Face Cream</p>
+                <p class="text-hiyoucan-700 font-bold mt-1">Rp 195.000</p>
+            </div>
+        </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 h-auto">
                     <div class="relative group overflow-hidden rounded-2xl md:col-span-1 h-64 md:h-full bg-white">
                         <img src="{{ 'https://naturium.com/cdn/shop/files/multipeptide-jumbo_0408-crop.jpg?v=1716225420' }}"
                             class="w-full h-full object-cover transition duration-500 group-hover:scale-105"
@@ -122,6 +194,7 @@
                             <p class="font-bold text-hiyoucan-900">Face Cream</p>
                             <a href="#" class="text-xs text-hiyoucan-600 hover:underline">Shop Now</a>
                         </div>
+                        
                     </div>
 
                     <div class="md:col-span-2 grid grid-cols-2 grid-rows-2 gap-6 h-full">
@@ -167,78 +240,9 @@
                     <a href="#" class="text-hiyoucan-600 font-medium hover:underline">See All Products</a>
                 </div>
 
-                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
-                    <div class="group">
-                        <div class="relative aspect-square overflow-hidden rounded-xl bg-earth-100 mb-4">
-                            <img src="https://images.unsplash.com/photo-1611930022073-b7a4ba5fcccd?q=80&w=1000&auto=format&fit=crop"
-                                class="object-cover w-full h-full group-hover:scale-110 transition duration-500">
-                            <button
-                                class="absolute bottom-4 right-4 bg-white p-2 rounded-full shadow-md hover:bg-hiyoucan-600 hover:text-white transition">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
-                                </svg>
-                            </button>
-                        </div>
-                        <h3 class="font-medium text-gray-900">Apricot Melon</h3>
-                        <p class="text-sm text-gray-500">Softening Cream</p>
-                        <p class="text-hiyoucan-700 font-bold mt-1">Rp 145.000</p>
-                    </div>
-
-
-                    <div class="group">
-                        <div class="relative aspect-square overflow-hidden rounded-xl bg-earth-100 mb-4">
-                            <img src="https://images.unsplash.com/photo-1601049541289-9b1b7bbbfe19?q=80&w=1000&auto=format&fit=crop"
-                                class="object-cover w-full h-full group-hover:scale-110 transition duration-500">
-                            <button
-                                class="absolute bottom-4 right-4 bg-white p-2 rounded-full shadow-md hover:bg-hiyoucan-600 hover:text-white transition">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
-                                </svg>
-                            </button>
-                            <h3 class="font-medium text-gray-900">Birch Butter</h3>
-                            <p class="text-sm text-gray-500">Silkiness Cream</p>
-                            <p class="text-hiyoucan-700 font-bold mt-1">Rp 180.000</p>
-                        </div>
-                    </div>
-
-                    <div class="group">
-                        <div class="relative aspect-square overflow-hidden rounded-xl bg-earth-100 mb-4">
-                            <img src="https://images.unsplash.com/photo-1620916297397-a4a5402a3c6c?q=80&w=1000&auto=format&fit=crop"
-                                class="object-cover w-full h-full group-hover:scale-110 transition duration-500">
-                            <button
-                                class="absolute bottom-4 right-4 bg-white p-2 rounded-full shadow-md hover:bg-hiyoucan-600 hover:text-white transition">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
-                                </svg>
-                            </button>
-                            <h3 class="font-medium text-gray-900">Azalea Fields</h3>
-                            <p class="text-sm text-gray-500">Soothing Cream</p>
-                            <p class="text-hiyoucan-700 font-bold mt-1">Rp 210.000</p>
-                        </div>
-                    </div>
-
-                    <div class="group">
-                        <div class="relative aspect-square overflow-hidden rounded-xl bg-earth-100 mb-4">
-                            <img src="https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?q=80&w=1000&auto=format&fit=crop"
-                                class="object-cover w-full h-full group-hover:scale-110 transition duration-500">
-                            <button
-                                class="absolute bottom-4 right-4 bg-white p-2 rounded-full shadow-md hover:bg-hiyoucan-600 hover:text-white transition">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
-                                </svg>
-                            </button>
-                        </div>
-                        <h3 class="font-medium text-gray-900">Aura Natural</h3>
-                        <p class="text-sm text-gray-500">Face Cream</p>
-                        <p class="text-hiyoucan-700 font-bold mt-1">Rp 195.000</p>
-                    </div>
-                </div>
             </div>
         </section>
+        
 
     </div>
 

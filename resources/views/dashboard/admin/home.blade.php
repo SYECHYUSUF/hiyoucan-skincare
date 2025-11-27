@@ -4,15 +4,10 @@
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 {{ __('Admin Dashboard') }}
             </h2>
-            <div class="space-x-4">
-                <a href="{{ route('admin.users') }}" class="bg-blue-600 text-white px-4 py-2 rounded-md text-sm hover:bg-blue-700">Manage Users</a>
-                <a href="{{ route('admin.categories') }}" class="bg-green-600 text-white px-4 py-2 rounded-md text-sm hover:bg-green-700">Manage Categories</a>
-                <a href="{{ route('admin.products') }}" class="bg-red-600 text-white px-4 py-2 rounded-md text-sm hover:bg-red-700">Manage Products</a>
-            </div>
         </div>
     </x-slot>
 
-    <div class="py-12">
+    <div class="py-8">
         <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6 border-l-4 border-green-500">
                 <p class="text-sm text-gray-500">Total Revenue</p>

@@ -12,7 +12,6 @@
             <div class="flex items-center gap-8">
                 <a href="/" class="text-2xl font-bold text-hiyoucan-900 uppercase tracking-widest">Hiyoucan.</a>
                 <a href="{{ route('shop.index') }}" class="text-gray-500 hover:text-hiyoucan-700 font-medium">Shop</a>
-                <a href="{{ route('dashboard') }}" class="text-gray-500 hover:text-hiyoucan-700 font-medium">Dashboard</a>
             </div>
             
             <div class="flex items-center gap-4">

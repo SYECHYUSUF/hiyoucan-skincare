@@ -49,7 +49,7 @@ class OrderController extends Controller
                 'user_id' => $user->id,
                 'total_price' => $total,
                 'status' => 'pending',
-                'address' => $request->address, // <--- INI PERUBAHANNYA (Bukan hardcode lagi)
+                'address' => $request->address, 
             ]);
 
             foreach ($cartItems as $item) {
