@@ -111,6 +111,36 @@ class AdminController extends Controller
         return back()->with('success', 'Role pengguna berhasil diubah menjadi ' . ucfirst($request->role));
     }
 
+    public function editUser($id)
+    {
+        $user = User::findOrFail($id);
+        return view('dashboard.admin.users-edit', compact('user'));
+    }
+
+    // Proses Update Info User
+    public function updateUser(Request $request, $id)
+    {
+        $user = User::findOrFail($id);
+
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|max:255|unique:users,email,'.$user->id,
+            // Password opsional, diisi jika ingin diganti
+            'password' => 'nullable|min:8', 
+        ]);
+
+        $user->name = $request->name;
+        $user->email = $request->email;
+        
+        if ($request->filled('password')) {
+            $user->password = bcrypt($request->password);
+        }
+
+        $user->save();
+
+        return redirect()->route('admin.users')->with('success', 'Informasi pengguna berhasil diperbarui.');
+    }
+
     public function destroyUser($id)
     {
         $user = User::findOrFail($id);

@@ -45,7 +45,7 @@ class ShopController extends Controller
                 $query->latest();
                 break;
             default:
-                $query->latest(); // Default urutan terbaru
+                $query->inRandomOrder(); 
                 break;
         }
 

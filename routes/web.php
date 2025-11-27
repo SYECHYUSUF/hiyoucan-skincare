@@ -79,6 +79,8 @@ Route::middleware('auth')->group(function () {
         Route::post('/users/{id}/verify', [AdminController::class, 'verifySeller'])->name('users.verify');
         Route::patch('/users/{id}/role', [AdminController::class, 'updateRole'])->name('users.update-role');
         Route::delete('/users/{id}', [AdminController::class, 'destroyUser'])->name('users.destroy');
+        Route::get('/users/{id}/edit', [AdminController::class, 'editUser'])->name('users.edit');
+        Route::put('/users/{id}', [AdminController::class, 'updateUser'])->name('users.update');
         
         // Manage Categories
         Route::get('/categories', [AdminController::class, 'categories'])->name('categories');
@@ -88,6 +90,8 @@ Route::middleware('auth')->group(function () {
         // BARU: Manage Products (Supervision)
         Route::get('/products', [AdminController::class, 'products'])->name('products');
         Route::delete('/products/{id}', [AdminController::class, 'destroyProduct'])->name('products.destroy');
+
+        
     });
 
    // --- SELLER ROUTES ---
