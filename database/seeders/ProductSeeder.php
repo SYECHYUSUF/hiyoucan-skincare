@@ -82,7 +82,7 @@ class ProductSeeder extends Seeder
                 'name' => 'Lavender Body Wash',
                 'price' => 95000,
                 'category_id' => $catBody,
-                'image' => 'https://images.unsplash.com/photo-1608248597279-f99d160bfbc8?q=80&w=1000&auto=format&fit=crop',
+                'image' => 'https://lusetabeauty.com/cdn/shop/products/1lavenderbodywash_1024x1024.jpg?v=1719301798',
                 'desc' => 'Sabun mandi cair dengan aroma lavender yang menenangkan pikiran.',
             ],
             [
@@ -103,7 +103,7 @@ class ProductSeeder extends Seeder
                 'name' => 'Herbal Hand Cream',
                 'price' => 65000,
                 'category_id' => $catBody,
-                'image' => 'https://images.unsplash.com/photo-1620917670397-a333b79f88c1?q=80&w=1000&auto=format&fit=crop',
+                'image' => 'https://nadisherbalbali.com/public/uploads/all/Xqm8j4B8gqa22ic4iNO5bPjPEvHCrc5jWhlBfXkZ.jpg',
                 'desc' => 'Krim tangan lembut dengan ekstrak herbal alami.',
             ],
 
@@ -119,7 +119,7 @@ class ProductSeeder extends Seeder
                 'name' => 'Volumizing Shampoo',
                 'price' => 130000,
                 'category_id' => $catHair,
-                'image' => 'https://images.unsplash.com/photo-1631729371254-42c2a89ddf0d?q=80&w=1000&auto=format&fit=crop',
+                'image' => 'https://nadisherbalbali.com/public/uploads/all/Xqm8j4B8gqa22ic4iNO5bPjPEvHCrc5jWhlBfXkZ.jpg',
                 'desc' => 'Shampoo untuk menambah volume rambut tipis dan lepek.',
             ],
             [
@@ -135,14 +135,14 @@ class ProductSeeder extends Seeder
                 'name' => 'Velvet Matte Lipstick',
                 'price' => 150000,
                 'category_id' => $catMakeup,
-                'image' => 'https://images.unsplash.com/photo-1586495777744-4413f21062dc?q=80&w=1000&auto=format&fit=crop',
+                'image' => 'https://enviostore.com/media/product/2447/product_image-1704376063.jpeg',
                 'desc' => 'Lipstick matte dengan tekstur velvet yang tidak membuat bibir kering.',
             ],
             [
                 'name' => 'Natural Blush On',
                 'price' => 115000,
                 'category_id' => $catMakeup,
-                'image' => 'https://images.unsplash.com/photo-1596462502278-27bfdd403348?q=80&w=1000&auto=format&fit=crop',
+                'image' => 'https://id-test-11.slatic.net/p/f9eaf13b082676d074c275528e1f5880.jpg',
                 'desc' => 'Perona pipi dengan pigmentasi alami untuk wajah segar merona.',
             ],
             [
@@ -165,7 +165,7 @@ class ProductSeeder extends Seeder
                 'name' => 'Vanilla Musk Eau de Parfum',
                 'price' => 600000,
                 'category_id' => $catFragrance,
-                'image' => 'https://images.unsplash.com/photo-1594035910387-406691aa6981?q=80&w=1000&auto=format&fit=crop',
+                'image' => 'https://nematperfumes.com/cdn/shop/products/NematVanillaMusck_2048x@2x.jpg?v=1563824038',
                 'desc' => 'Keharuman vanilla manis dipadukan dengan musk yang elegan.',
             ],
             [
@@ -179,7 +179,7 @@ class ProductSeeder extends Seeder
                 'name' => 'Woody Spice Cologne',
                 'price' => 480000,
                 'category_id' => $catFragrance,
-                'image' => 'https://images.unsplash.com/photo-1523293188086-b589b9bee896?q=80&w=1000&auto=format&fit=crop',
+                'image' => 'https://www.spacenk.com/on/demandware.static/-/Library-Sites-spacenk-global/default/dwfae46499/WoodyFragranceRoundup_Landscape.jpg',
                 'desc' => 'Wewangian maskulin dengan sentuhan kayu cendana dan rempah.',
             ],
         ];

@@ -6,6 +6,7 @@
     <title>{{ config('app.name', 'Hiyoucan Dashboard') }}</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 </head>
 <body class="bg-gray-50 font-sans antialiased">
     
@@ -85,5 +86,13 @@
 
         <div x-show="sidebarOpen" @click="sidebarOpen = false" class="fixed inset-0 z-40 bg-black opacity-50 md:hidden" style="display: none;"></div>
     </div>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+  AOS.init({
+    duration: 800, // Durasi animasi (ms)
+    once: true,    // Animasi hanya sekali saat scroll ke bawah
+    offset: 100,   // Jarak trigger animasi dari bawah layar
+  });
+</script>
 </body>
 </html> 
