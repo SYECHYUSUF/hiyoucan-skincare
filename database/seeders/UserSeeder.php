@@ -16,10 +16,10 @@ class UserSeeder extends Seeder
     {
         // 1. Akun ADMIN
         User::firstOrCreate(
-            ['email' => 'admin@hiyoucan.com'], // Cek email biar tidak duplikat
+            ['email' => 'admin@hiyoucan.com'], 
             [
                 'name' => 'Super Admin',
-                'password' => Hash::make('password'), // Password default
+                'password' => Hash::make('password'), 
                 'role' => 'admin',
                 'email_verified_at' => now(),
             ]

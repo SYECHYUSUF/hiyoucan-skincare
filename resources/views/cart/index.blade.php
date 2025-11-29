@@ -5,12 +5,12 @@
     <title>My Cart - {{ config('app.name') }}</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="bg-earth-100/30 font-sans antialiased text-gray-700">
+<body class="bg-earth-100/30 font-sans antialiased text-gray-700 mt-12">
 
     @include('layouts.public-nav')
 
     <div class="max-w-7xl mx-auto px-4 py-12">
-        <h1 class="text-3xl font-bold text-hiyoucan-900 mb-8">Shopping Cart</h1>
+        <h1 class="text-3xl font-bold text-hiyoucan-900 pl-6 mb-8">Shopping Cart</h1>
 
         @if($cartItems->count() > 0)
         <div class="flex flex-col lg:flex-row gap-8">

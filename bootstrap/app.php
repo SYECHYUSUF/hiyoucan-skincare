@@ -13,7 +13,7 @@ return Application::configure(basePath: dirname(__DIR__))
  ->withMiddleware(function (Middleware $middleware): void {
         $middleware->alias([
             'admin' => \App\Http\Middleware\Admin::class,
-            'seller' => \App\Http\Middleware\Seller::class, // GANTI INI
+            'seller' => \App\Http\Middleware\Seller::class, 
             'seller.approved' => \App\Http\Middleware\EnsureSellerIsApproved::class,
         ]);
     })

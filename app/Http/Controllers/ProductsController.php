@@ -7,7 +7,7 @@ use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Storage; // PENTING
+use Illuminate\Support\Facades\Storage; 
 
 class ProductsController extends Controller
 {
@@ -23,7 +23,6 @@ class ProductsController extends Controller
         return view('dashboard.seller.products.create', compact('categories'));
     }
 
-    // --- LOGIKA STORE DENGAN UPLOAD GAMBAR ---
     public function store(Request $request)
     {
         $request->validate([
@@ -32,7 +31,7 @@ class ProductsController extends Controller
             'price' => 'required|numeric|min:0',
             'stock' => 'required|integer|min:0',
             'description' => 'required|string',
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // Validasi File Gambar
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', 
         ]);
 
         // Proses Upload
@@ -49,7 +48,7 @@ class ProductsController extends Controller
             'description' => $request->description,
             'price' => $request->price,
             'stock' => $request->stock,
-            'image' => $imagePath, // Simpan path-nya saja
+            'image' => $imagePath, 
             'is_active' => true,
         ]);
 
@@ -73,7 +72,7 @@ class ProductsController extends Controller
             'category_id' => 'required|exists:categories,id',
             'price' => 'required|numeric',
             'stock' => 'required|integer',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048', // Nullable karena boleh tidak ganti gambar
+            'image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048', 
         ]);
 
         $data = [
@@ -100,12 +99,10 @@ class ProductsController extends Controller
         return redirect()->route('seller.products.index')->with('success', 'Product updated successfully!');
     }
 
-    // --- LOGIKA DELETE DENGAN HAPUS GAMBAR ---
     public function destroy(Product $product)
     {
         if ($product->seller_id !== Auth::id()) { abort(403); }
         
-        // Hapus gambar dari storage saat produk dihapus
         if ($product->image && !Str::startsWith($product->getRawOriginal('image'), 'http')) {
             Storage::disk('public')->delete($product->getRawOriginal('image'));
         }

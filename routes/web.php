@@ -11,11 +11,6 @@ use App\Http\Controllers\StoresController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| Public Routes (Bisa diakses siapa saja)
-|--------------------------------------------------------------------------
-*/
 
 Route::get('/', function () {
     return view('welcome');
@@ -29,12 +24,6 @@ Route::get('/about', function () {
 // Halaman Shop & Detail Produk
 Route::get('/shop', [ShopController::class, 'index'])->name('shop.index');
 Route::get('/shop/{product:slug}', [ShopController::class, 'show'])->name('shop.show');
-
-/*
-|--------------------------------------------------------------------------
-| Authenticated Routes (Harus Login)
-|--------------------------------------------------------------------------
-*/
 
 // Dashboard Logic (HomeController akan memfilter Buyer agar tidak masuk sini)
 Route::get('/dashboard', [HomeController::class, 'index'])
@@ -61,9 +50,7 @@ Route::middleware('auth')->group(function () {
 
     Route::post('/products/{product}/review', [App\Http\Controllers\ReviewController::class, 'store'])->name('reviews.store');
 
-    // Route Khusus Seller Pending (Status Menunggu Verifikasi)
     Route::get('/seller/pending', function () {
-        // Jika user ternyata SUDAH diapprove, lempar ke dashboard
         if (Auth::user()->email_verified_at) {
             return redirect()->route('seller.home');
         }

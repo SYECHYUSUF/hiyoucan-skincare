@@ -33,7 +33,6 @@ class User extends Authenticatable
         ];
     }
 
-    // --- RELASI LENGKAP ---
 
     // 1. User punya banyak Keranjang
     public function carts(): HasMany

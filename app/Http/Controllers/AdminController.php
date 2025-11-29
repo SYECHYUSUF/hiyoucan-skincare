@@ -5,10 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Models\User;
 use App\Models\Order;
-use App\Models\Product; // Tambahkan ini
+use App\Models\Product; 
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Storage; // Tambahkan ini untuk hapus gambar
+use Illuminate\Support\Facades\Storage; 
 
 class AdminController extends Controller
 {
@@ -24,12 +24,10 @@ class AdminController extends Controller
         return view('dashboard.admin.home', compact('stats'));
     }
 
-    // Update method users
     public function users(Request $request)
     {
         $query = User::where('role', '!=', 'admin');
 
-        // Logic Search
         if ($request->search) {
             $query->where(function($q) use ($request) {
                 $q->where('name', 'like', '%'.$request->search.'%')
@@ -37,7 +35,6 @@ class AdminController extends Controller
             });
         }
 
-        // Logic Filter Role
         if ($request->role && $request->role != 'all') {
             $query->where('role', $request->role);
         }
@@ -46,12 +43,10 @@ class AdminController extends Controller
         return view('dashboard.admin.users', compact('users'));
     }
 
-    // Update method products
     public function products(Request $request)
     {
         $query = Product::with(['seller', 'category']);
 
-        // Logic Search Produk
         if ($request->search) {
             $query->where('name', 'like', '%'.$request->search.'%');
         }
@@ -83,23 +78,20 @@ class AdminController extends Controller
         return back();
     }
 
-    // PERBAIKAN: Hapus opsi 'admin' dari validasi
     public function updateRole(Request $request, $id)
     {
         $request->validate([
-            'role' => 'required|in:user,seller' // Admin dihapus dari sini
+            'role' => 'required|in:user,seller' 
         ]);
 
         $user = User::findOrFail($id);
         
-        // Cegah jika mencoba mengubah akun admin utama
         if ($user->role === 'admin') {
             return back()->with('error', 'Tidak dapat mengubah role sesama Admin.');
         }
 
         $user->role = $request->role;
 
-        // Logika verifikasi ulang jika jadi seller
         if ($request->role === 'seller' && !$user->email_verified_at) {
             $user->email_verified_at = null; 
         } elseif ($request->role === 'user') {
@@ -125,7 +117,6 @@ class AdminController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255|unique:users,email,'.$user->id,
-            // Password opsional, diisi jika ingin diganti
             'password' => 'nullable|min:8', 
         ]);
 
@@ -151,13 +142,11 @@ class AdminController extends Controller
         return back()->with('success', 'User berhasil dihapus.');
     }
 
-    // --- BARU: ADMIN PRODUCT MANAGEMENT ---
 
     public function destroyProduct($id)
     {
         $product = Product::findOrFail($id);
 
-        // Hapus gambar dari storage jika ada
         if ($product->image && !Str::startsWith($product->getRawOriginal('image'), 'http')) {
             Storage::disk('public')->delete($product->getRawOriginal('image'));
         }
@@ -167,7 +156,6 @@ class AdminController extends Controller
         return back()->with('success', 'Produk berhasil dihapus karena melanggar ketentuan.');
     }
 
-    // --- KATEGORI ---
     public function categories()
     {
         $categories = Category::withCount('products')->get();

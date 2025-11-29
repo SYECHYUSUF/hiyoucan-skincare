@@ -89,9 +89,9 @@
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <script>
   AOS.init({
-    duration: 800, // Durasi animasi (ms)
-    once: true,    // Animasi hanya sekali saat scroll ke bawah
-    offset: 100,   // Jarak trigger animasi dari bawah layar
+    duration: 800, 
+    once: true,    
+    offset: 100,   
   });
 </script>
 </body>

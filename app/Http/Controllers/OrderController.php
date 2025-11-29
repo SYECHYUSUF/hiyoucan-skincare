@@ -11,7 +11,6 @@ use Illuminate\Support\Facades\DB;
 
 class OrderController extends Controller
 {
-    // Menampilkan Riwayat Pesanan
     public function index()
     {
         /** @var \App\Models\User $user */
@@ -22,11 +21,8 @@ class OrderController extends Controller
         return view('orders.index', compact('orders'));
     }
 
-    // Proses Checkout
-    // Proses Checkout
     public function checkout(Request $request)
     {
-        // 1. Validasi Alamat Wajib Diisi
         $request->validate([
             'address' => 'required|string|max:500',
         ]);
@@ -44,7 +40,6 @@ class OrderController extends Controller
         });
 
         DB::transaction(function () use ($user, $cartItems, $total, $request) {
-            // 2. Simpan Order dengan Alamat dari Request
             $order = Order::create([
                 'user_id' => $user->id,
                 'total_price' => $total,
