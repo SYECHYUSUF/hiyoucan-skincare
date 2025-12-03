@@ -83,14 +83,11 @@ class ProductsController extends Controller
             'description' => $request->description,
         ];
 
-        // Cek jika ada upload gambar baru
         if ($request->hasFile('image')) {
-            // 1. Hapus gambar lama (Hanya jika itu file lokal, bukan URL dummy)
             if ($product->image && !Str::startsWith($product->getRawOriginal('image'), 'http')) {
                 Storage::disk('public')->delete($product->getRawOriginal('image'));
             }
             
-            // 2. Simpan gambar baru
             $data['image'] = $request->file('image')->store('products', 'public');
         }
 

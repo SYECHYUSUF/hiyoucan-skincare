@@ -48,7 +48,7 @@ class UserSeeder extends Seeder
         );
 
         // 4. Akun BUYER (Customer)
-        User::firstOrCreate(
+        User::firstOrCreate(    
             ['email' => 'buyer@hiyoucan.com'],
             [
                 'name' => 'Lovely Customer',

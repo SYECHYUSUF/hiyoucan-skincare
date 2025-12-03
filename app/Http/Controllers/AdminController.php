@@ -132,6 +132,29 @@ class AdminController extends Controller
         return redirect()->route('admin.users')->with('success', 'Informasi pengguna berhasil diperbarui.');
     }
 
+
+    public function editCategory($id)
+    {
+        $category = Category::findOrFail($id);
+        return view('dashboard.admin.categories-edit', compact('category'));
+    }
+
+    public function updateCategory(Request $request, $id)
+    {
+        $category = Category::findOrFail($id);
+
+        $request->validate([
+            'name' => 'required|string|max:255|unique:categories,name,' . $category->id,
+        ]);
+
+        $category->update([
+            'name' => $request->name,
+            'slug' => Str::slug($request->name),
+        ]);
+
+        return redirect()->route('admin.categories')->with('success', 'Kategori berhasil diperbarui.');
+    }
+
     public function destroyUser($id)
     {
         $user = User::findOrFail($id);
@@ -174,4 +197,5 @@ class AdminController extends Controller
         $category->delete();
         return back()->with('success', 'Kategori dihapus.');
     }
+    
 }

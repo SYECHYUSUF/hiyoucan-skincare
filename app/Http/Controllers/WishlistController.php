@@ -11,7 +11,7 @@ class WishlistController extends Controller
 {
     public function index()
     {
-        /** @var \App\Models\User $user */
+        /** @var \App\Models\User $user */  
         $user = Auth::user();
 
         $wishlists = $user->wishlists()->with('product.category')->latest()->paginate(10);

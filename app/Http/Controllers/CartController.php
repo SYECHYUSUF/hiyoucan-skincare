@@ -45,6 +45,25 @@ class CartController extends Controller
         return redirect()->route('cart.index')->with('success', 'Product added to cart!');
     }
 
+    public function update(Request $request, Cart $cart)
+    {
+        if ($cart->user_id !== Auth::id()) {
+            abort(403);
+        }
+
+        $request->validate([
+            'quantity' => 'required|integer|min:1'
+        ]);
+
+        // Update jumlah
+        $cart->update([
+            'quantity' => $request->quantity
+        ]);
+
+        // Kembali ke halaman cart dengan pesan sukses
+        return back()->with('success', 'Cart updated successfully');
+    }
+
     public function destroy(Cart $cart)
     {
         if ($cart->user_id !== Auth::id()) {
