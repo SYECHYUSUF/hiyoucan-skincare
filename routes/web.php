@@ -25,7 +25,7 @@ Route::get('/', function () {
 
 // Halaman About
 Route::get('/about', function () {
-    return view('about');
+    return view('about')->with('title', 'About');
 })->name('about');
 
 // Halaman Shop & Detail Produk
