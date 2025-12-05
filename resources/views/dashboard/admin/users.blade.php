@@ -37,7 +37,6 @@
                     <tr class="bg-gray-50 text-xs text-gray-500 uppercase tracking-wider border-b border-gray-200">
                         <th class="p-4 font-bold">User Identity</th>
                         <th class="p-4 font-bold">Current Role</th>
-                        <th class="p-4 font-bold">Change Role</th>
                         <th class="p-4 font-bold">Seller Status</th>
                         <th class="p-4 font-bold text-right">Actions</th>
                     </tr>
@@ -67,20 +66,6 @@
                             @else
                                 <span class="px-2 py-1 rounded-full text-xs font-bold bg-gray-100 text-gray-700 shadow-sm">{{ ucfirst($user->role) }}</span>
                             @endif
-                        </td>
-
-                        <td class="p-4">
-                            <form action="{{ route('admin.users.update-role', $user->id) }}" method="POST" class="flex items-center gap-2 group">
-                                @csrf
-                                @method('PATCH')
-                                <select name="role" class="text-xs border-gray-300 rounded shadow-sm focus:ring-hiyoucan-500 focus:border-hiyoucan-500 py-1 bg-white cursor-pointer transition group-hover:border-hiyoucan-400">
-                                    <option value="user" {{ $user->role == 'user' ? 'selected' : '' }}>Buyer</option>
-                                    <option value="seller" {{ $user->role == 'seller' ? 'selected' : '' }}>Seller</option>
-                                </select>
-                                <button type="submit" class="text-xs bg-gray-800 text-white px-2 py-1.5 rounded hover:bg-gray-700 transition transform hover:scale-105 shadow-sm" title="Save Role">
-                                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-                                </button>
-                            </form>
                         </td>
 
                         <td class="p-4">
@@ -136,7 +121,7 @@
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="5" class="p-8 text-center text-gray-500" data-aos="zoom-in">
+                        <td colspan="4" class="p-8 text-center text-gray-500" data-aos="zoom-in">
                             <div class="flex flex-col items-center justify-center">
                                 <svg class="w-12 h-12 text-gray-300 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
                                 <p>No users found matching your criteria.</p>
