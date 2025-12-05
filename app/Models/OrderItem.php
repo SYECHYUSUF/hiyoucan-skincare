@@ -10,20 +10,14 @@ class OrderItem extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['order_id', 'product_id', 'quantity', 'price'];
+    protected $fillable = ['order_id', 'product_id', 'quantity', 'price','status'];
 
-    /**
-     * Relasi: Item ini adalah produk apa?
-     */
+    
     public function product(): BelongsTo
     {
         return $this->belongsTo(Product::class);
     }
 
-    /**
-     * Relasi: Item ini milik Order (Nota) yang mana?
-     * (INI YANG KEMARIN KURANG)
-     */
     public function order(): BelongsTo
     {
         return $this->belongsTo(Order::class);

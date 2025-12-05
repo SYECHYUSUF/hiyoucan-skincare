@@ -86,12 +86,24 @@ class StoresController extends Controller
         return view('dashboard.seller.orders', compact('orderItems'));
     }
     
-    public function updateOrderStatus(Request $request, $orderId)
+    public function updateOrderStatus(Request $request, $orderItemId)
     {
-        $request->validate(['status' => 'required|in:pending,processing,completed,cancelled']);
-        $order = Order::findOrFail($orderId);
-        $order->status = $request->status;
-        $order->save();
-        return back()->with('success', 'Order status updated.');
+        $request->validate([
+            'status' => 'required|in:pending,processing,completed,cancelled'
+        ]);
+
+        // Cari Item Pesanan, bukan Order Induk
+        $orderItem = OrderItem::findOrFail($orderItemId);
+
+        // Pastikan barang ini milik seller yang sedang login (Keamanan)
+        if ($orderItem->product->seller_id !== Auth::id()) {
+            abort(403);
+        }
+
+        // Update status per item
+        $orderItem->status = $request->status;
+        $orderItem->save();
+
+        return back()->with('success', 'Item status updated to ' . ucfirst($request->status));
     }
 }

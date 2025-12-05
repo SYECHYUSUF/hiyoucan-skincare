@@ -11,7 +11,6 @@ return new class extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade'); // Pembeli
-            $table->string('status')->default('pending'); // pending, processing, completed, cancelled
             $table->decimal('total_price', 12, 2);
             $table->text('address')->nullable(); // Alamat pengiriman (Simpel dulu)
             $table->timestamps();

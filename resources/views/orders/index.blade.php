@@ -28,26 +28,17 @@
                             <p class="text-xs text-gray-400 uppercase tracking-wider font-bold mb-1">Total</p>
                             <p class="text-hiyoucan-700 font-bold text-lg">Rp {{ number_format($order->total_price, 0, ',', '.') }}</p>
                         </div>
-                        <div>
-                            <span class="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide
-                                {{ $order->status == 'pending' ? 'bg-yellow-100 text-yellow-700' : '' }}
-                                {{ $order->status == 'processing' ? 'bg-blue-100 text-blue-700' : '' }}
-                                {{ $order->status == 'completed' ? 'bg-green-100 text-green-700' : '' }}
-                                {{ $order->status == 'cancelled' ? 'bg-red-100 text-red-700' : '' }}">
-                                {{ ucfirst($order->status) }}
-                            </span>
-                        </div>
                     </div>
 
                     <div class="p-6 bg-white">
                         <div class="space-y-6">
                             @foreach($order->items as $item)
-                            <div class="flex items-center group">
-                                <a href="{{ route('shop.show', $item->product->slug) }}" class="h-16 w-16 flex-shrink-0 overflow-hidden rounded-xl border border-gray-100 bg-earth-50">
+                            <div class="flex flex-col sm:flex-row sm:items-center group gap-4">
+                                <a href="{{ route('shop.show', $item->product->slug) }}" class="h-20 w-20 flex-shrink-0 overflow-hidden rounded-xl border border-gray-100 bg-earth-50">
                                     <img src="{{ $item->product->image }}" alt="{{ $item->product->name }}" class="h-full w-full object-cover object-center group-hover:scale-110 transition duration-500">
                                 </a>
 
-                                <div class="ml-6 flex-1">
+                                <div class="flex-1">
                                     <div class="flex justify-between text-base font-medium text-gray-900">
                                         <h3 class="group-hover:text-hiyoucan-700 transition">
                                             <a href="{{ route('shop.show', $item->product->slug) }}">{{ $item->product->name }}</a>
@@ -55,7 +46,18 @@
                                         <p class="font-bold text-gray-600">Rp {{ number_format($item->price, 0, ',', '.') }}</p>
                                     </div>
                                     <p class="mt-1 text-sm text-gray-500">{{ $item->product->category->name ?? 'General' }}</p>
-                                    <p class="text-sm text-gray-400 mt-1">Qty: {{ $item->quantity }}</p>
+                                    
+                                    <div class="flex justify-between items-center mt-2">
+                                        <p class="text-sm text-gray-400">Qty: {{ $item->quantity }}</p>
+                                        
+                                        <span class="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide
+                                            {{ $item->status == 'pending' ? 'bg-yellow-100 text-yellow-700' : '' }}
+                                            {{ $item->status == 'processing' ? 'bg-blue-100 text-blue-700' : '' }}
+                                            {{ $item->status == 'completed' ? 'bg-green-100 text-green-700' : '' }}
+                                            {{ $item->status == 'cancelled' ? 'bg-red-100 text-red-700' : '' }}">
+                                            {{ ucfirst($item->status) }}
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
                             @if(!$loop->last) <div class="border-b border-gray-50"></div> @endif
@@ -69,7 +71,6 @@
             <div class="text-center py-32 bg-white rounded-3xl shadow-sm border border-dashed border-gray-200" data-aos="zoom-in">
                 <div class="text-6xl mb-4">📦</div>
                 <h3 class="mt-2 text-lg font-bold text-gray-900">No orders yet</h3>
-                <p class="mt-1 text-gray-500">You haven't placed any orders yet.</p>
                 <div class="mt-8">
                     <a href="{{ route('shop.index') }}" class="inline-flex items-center px-6 py-3 border border-transparent shadow-lg text-sm font-bold rounded-full text-white bg-hiyoucan-700 hover:bg-hiyoucan-800 transition transform hover:-translate-y-1">
                         Start Shopping

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Order;
+use App\Models\OrderItem;
 use App\Models\Product;
 use App\Models\Review;
 use Illuminate\Http\Request;
@@ -19,16 +19,15 @@ class ReviewController extends Controller
 
         $user = Auth::user();
 
-        // 1. Cek apakah user sudah pernah membeli produk ini DAN status ordernya 'completed'
-        $hasBought = Order::where('user_id', $user->id)
-            ->where('status', 'completed')
-            ->whereHas('items', function ($query) use ($product) {
-                $query->where('product_id', $product->id);
+        $hasBought = OrderItem::whereHas('order', function($q) use ($user) {
+                $q->where('user_id', $user->id);
             })
+            ->where('product_id', $product->id)
+            ->where('status', 'completed') // Cek status di item level
             ->exists();
 
         if (!$hasBought) {
-            return back()->with('error', 'Anda harus membeli produk ini dan menunggu pesanan selesai sebelum memberikan ulasan.');
+            return back()->with('error', 'Anda harus membeli dan menerima produk ini sebelum memberikan ulasan.');
         }
 
         // 2. Cek apakah user sudah pernah review sebelumnya (biar tidak spam)

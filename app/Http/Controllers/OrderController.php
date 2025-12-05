@@ -40,20 +40,23 @@ class OrderController extends Controller
         });
 
         DB::transaction(function () use ($user, $cartItems, $total, $request) {
+            // 1. Buat Order (Tanpa Status)
             $order = Order::create([
                 'user_id' => $user->id,
                 'total_price' => $total,
-                'status' => 'pending',
-                'address' => $request->address, 
+                'address' => $request->address,
             ]);
 
+            // 2. Buat Order Items (DENGAN STATUS per ITEM)
             foreach ($cartItems as $item) {
                 OrderItem::create([
                     'order_id' => $order->id,
                     'product_id' => $item->product_id,
                     'quantity' => $item->quantity,
                     'price' => $item->product->price,
+                    'status' => 'pending', 
                 ]);
+
                 $item->product->decrement('stock', $item->quantity);
             }
 

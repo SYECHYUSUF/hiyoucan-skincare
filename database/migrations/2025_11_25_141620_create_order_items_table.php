@@ -12,6 +12,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('order_id')->constrained()->onDelete('cascade');
             $table->foreignId('product_id')->constrained()->onDelete('cascade');
+            $table->string('status')->default('pending'); // pending, processing, completed, cancelled
             $table->integer('quantity');
             $table->decimal('price', 12, 2); // Harga saat beli (snapshot)
             $table->timestamps();

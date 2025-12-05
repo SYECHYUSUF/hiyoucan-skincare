@@ -1,7 +1,3 @@
-{{-- @php
-    $title = 'About';
-@endphp --}}
-
 @section('title', $title)
 
 <x-public-layout>
