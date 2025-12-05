@@ -67,13 +67,14 @@
                         <span class="text-2xl font-bold text-hiyoucan-700">Rp {{ number_format($total, 0, ',', '.') }}</span>
                     </div>
 
-                    <form action="{{ route('checkout') }}" method="POST">
+                    <form action="{{ route('checkout') }}" method="POST" id="checkout-form">
                         @csrf
                         <div class="mb-6">
                             <label class="block text-sm font-bold text-gray-700 mb-2">Shipping Address</label>
                             <textarea name="address" rows="3" class="w-full border-gray-300 rounded-xl text-sm focus:ring-hiyoucan-500 focus:border-hiyoucan-500 shadow-sm" placeholder="Enter your full delivery address..." required></textarea>
                         </div>
-                        <button type="submit" class="w-full bg-hiyoucan-800 text-white py-4 rounded-xl font-bold hover:bg-hiyoucan-900 transition shadow-lg hover:shadow-hiyoucan-500/20 transform hover:-translate-y-0.5 flex justify-center items-center gap-2">
+                        
+                        <button type="button" onclick="confirmCheckout(event)" class="w-full bg-hiyoucan-800 text-white py-4 rounded-xl font-bold hover:bg-hiyoucan-900 transition shadow-lg hover:shadow-hiyoucan-500/20 transform hover:-translate-y-0.5 flex justify-center items-center gap-2">
                             Checkout Now
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
                         </button>
@@ -92,3 +93,36 @@
         @endif
     </div>
 </x-public-layout>
+<script>
+    function confirmCheckout(event) {
+        event.preventDefault(); // Mencegah form kirim langsung
+
+        // Cek apakah alamat diisi
+        const address = document.querySelector('textarea[name="address"]').value;
+        if (!address.trim()) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Please enter your shipping address!',
+                confirmButtonColor: '#4B0600'
+            });
+            return;
+        }
+
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You are about to place an order. Make sure your items and address are correct.",
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#4B0600', // Warna Hiyoucan
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, Checkout!',
+            cancelButtonText: 'Check Again'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Kirim form secara manual
+                document.getElementById('checkout-form').submit();
+            }
+        })
+    }
+</script>
