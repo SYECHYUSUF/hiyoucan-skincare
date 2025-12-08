@@ -22,7 +22,7 @@
                 </div>
 
                 <div class="relative h-full w-full" data-aos="fade-left" data-aos-duration="1000" data-aos-delay="200">
-                    <img src="https://images.unsplash.com/photo-1616683693504-3ea7e9ad6fec?q=80&w=1887&auto=format&fit=crop" 
+                    <img src="https://i.pinimg.com/1200x/47/9b/64/479b6469425861cad26db981bd9e08cb.jpg" 
                             alt="Hiyoucan Model" 
                             class="object-cover w-full h-[500px] md:h-[750px] rounded-bl-[150px] shadow-2xl">
                     
@@ -108,7 +108,7 @@
                         </div>
                     </div>
                     <div class="relative group overflow-hidden rounded-3xl bg-white shadow-lg" data-aos="fade-up" data-aos-delay="200">
-                        <img src="https://images.unsplash.com/photo-1629198688000-71f23e745b6e?q=80&w=1000&auto=format&fit=crop" class="w-full h-full object-cover transition duration-700 group-hover:scale-110" alt="Toner">
+                        <img src="https://i.pinimg.com/1200x/88/12/e8/8812e8bdf2f4bcb357161ed2851115d2.jpg" class="w-full h-full object-cover transition duration-700 group-hover:scale-110" alt="Toner">
                         <div class="absolute bottom-6 left-6">
                             <span class="bg-white text-hiyoucan-900 px-5 py-2 rounded-full text-sm font-bold shadow-md hover:bg-hiyoucan-900 hover:text-white transition cursor-pointer">Toner</span>
                         </div>
