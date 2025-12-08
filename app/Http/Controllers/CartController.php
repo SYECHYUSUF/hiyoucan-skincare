@@ -22,17 +22,27 @@ class CartController extends Controller
 
     public function store(Request $request)
     {
+        
         $request->validate([
             'product_id' => 'required|exists:products,id',
-            'quantity' => 'required|integer|min:1'
+            'quantity' => 'required|integer|min:1',
         ]);
 
+        $stock = Product::findOrFail($request['product_id'])->stock;
+    
         $cartItem = Cart::where('user_id', Auth::id())
                         ->where('product_id', $request->product_id)
                         ->first();
 
+        $message = 'Product added to cart!';
+
         if ($cartItem) {
             $cartItem->quantity += $request->quantity;
+            if ($cartItem->quantity > $stock) { 
+                $cartItem->quantity =  $stock; 
+                $message = $message . ' Stock adjusted!';
+            }
+            
             $cartItem->save();
         } else {
             Cart::create([
@@ -42,26 +52,32 @@ class CartController extends Controller
             ]);
         }
 
-        return redirect()->route('cart.index')->with('success', 'Product added to cart!');
+        return redirect()->route('cart.index')->with('success', $message);
     }
 
-    public function update(Request $request, Cart $cart)
+    public function update(Request $request, $id)
     {
-        if ($cart->user_id !== Auth::id()) {
-            abort(403);
-        }
-
         $request->validate([
             'quantity' => 'required|integer|min:1'
         ]);
 
-        // Update jumlah
-        $cart->update([
-            'quantity' => $request->quantity
-        ]);
+        $cart = Cart::with('product')->findOrFail($id); // Load relasi product
 
-        // Kembali ke halaman cart dengan pesan sukses
-        return back()->with('success', 'Cart updated successfully');
+        // --- PERBAIKAN: CEK STOK ---
+        if ($request->quantity > $cart->product->stock) {
+            return back()->with('error', 'Maaf, stok tidak mencukupi. Maksimal: ' . $cart->product->stock);
+        }
+        // ---------------------------
+
+        // Cek kepemilikan
+        if ($cart->user_id !== Auth::id()) {
+            abort(403);
+        }
+
+        $cart->quantity = $request->quantity;
+        $cart->save();
+
+        return back()->with('success', 'Cart updated!');
     }
 
     public function destroy(Cart $cart)

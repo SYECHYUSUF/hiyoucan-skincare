@@ -35,28 +35,34 @@ class OrderController extends Controller
             return redirect()->route('cart.index')->with('error', 'Cart is empty');
         }
 
+        // --- PERBAIKAN: CEK STOK SEBELUM TRANSAKSI ---
+        foreach ($cartItems as $item) {
+            if ($item->quantity > $item->product->stock) {
+                return redirect()->back()->with('error', 'Stok produk "' . $item->product->name . '" tidak mencukupi. Sisa stok hanya: ' . $item->product->stock);
+            }
+        }
+        // ---------------------------------------------
+
         $total = $cartItems->sum(function ($item) {
             return $item->product->price * $item->quantity;
         });
 
         DB::transaction(function () use ($user, $cartItems, $total, $request) {
-            // 1. Buat Order (Tanpa Status)
+            // ... (Kode transaksi sama seperti sebelumnya) ...
             $order = Order::create([
                 'user_id' => $user->id,
                 'total_price' => $total,
-                'address' => $request->address,
+                'address' => $request->address, 
             ]);
 
-            // 2. Buat Order Items (DENGAN STATUS per ITEM)
             foreach ($cartItems as $item) {
                 OrderItem::create([
                     'order_id' => $order->id,
                     'product_id' => $item->product_id,
                     'quantity' => $item->quantity,
                     'price' => $item->product->price,
-                    'status' => 'pending', 
+                    'status' => 'pending',
                 ]);
-
                 $item->product->decrement('stock', $item->quantity);
             }
 
