@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\Order;
 use App\Models\OrderItem; // <--- Tambahkan Import Ini
 use App\Models\Product;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
@@ -178,8 +179,18 @@ class AdminController extends Controller
 
     public function destroyCategory(Category $category)
     {
-        $category->delete();
-        return back()->with('success', 'Kategori dihapus.');
+        try {
+            $category->delete();
+            return back()->with('success', 'Kategori berhasil dihapus.');
+        } catch (QueryException $e) {
+            // Error Code 23000 adalah kode untuk Integrity Constraint Violation
+            if ($e->errorInfo[1] == 1451) {
+                return back()->with('error', 'Gagal menghapus: Kategori ini masih digunakan oleh satu atau lebih Produk.');
+            }
+            
+            // Error database lainnya
+            return back()->with('error', 'Terjadi kesalahan sistem saat menghapus kategori.');
+        }
     }
 
     // --- EDIT USER INFO ---
