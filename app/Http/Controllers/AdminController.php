@@ -183,12 +183,10 @@ class AdminController extends Controller
             $category->delete();
             return back()->with('success', 'Kategori berhasil dihapus.');
         } catch (QueryException $e) {
-            // Error Code 23000 adalah kode untuk Integrity Constraint Violation
             if ($e->errorInfo[1] == 1451) {
                 return back()->with('error', 'Gagal menghapus: Kategori ini masih digunakan oleh satu atau lebih Produk.');
             }
             
-            // Error database lainnya
             return back()->with('error', 'Terjadi kesalahan sistem saat menghapus kategori.');
         }
     }

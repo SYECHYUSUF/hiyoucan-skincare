@@ -149,7 +149,7 @@ class ProductSeeder extends Seeder
                 'name' => 'Smooth Liquid Foundation',
                 'price' => 220000,
                 'category_id' => $catMakeup,
-                'image' => 'https://images.unsplash.com/photo-1616683693504-3ea7e9ad6fec?q=80&w=1000&auto=format&fit=crop',
+                'image' => 'https://mmc.tirto.id/image/otf/720x0/2023/11/22/header-diajeng-foundation_ratio-16x9.jpg',
                 'desc' => 'Foundation cair dengan coverage medium to full yang tahan lama.',
             ],
 
