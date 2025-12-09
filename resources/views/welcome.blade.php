@@ -176,7 +176,7 @@
             <img src="https://images.unsplash.com/photo-1552693673-1bf958298935?q=80&w=2000"
                 class="w-full h-full object-cover">
         </div>
-        <div class="relative max-w-4xl py-24 mx-auto text-center px-6 mb-4" data-aos="fade-up">
+        <div class="relative max-w-4xl py-24 mx-auto text-center px-6 " data-aos="fade-up">
             <h2 class="text-3xl md:text-5xl font-bold text-white mb-4 md:mb-6 leading-tight">Ready to find your perfect
                 match?</h2>
             <p class="text-hiyoucan-200 text-base md:text-lg mb-8 md:mb-10">Bergabunglah dengan ribuan pelanggan yang
